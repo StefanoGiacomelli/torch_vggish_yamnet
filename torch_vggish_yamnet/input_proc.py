@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torchaudio.transforms as ta_trans
 
-from params import CommonParams, YAMNetParams
+from .params import CommonParams, YAMNetParams
 
 
 class WaveformToInput(torch.nn.Module):
@@ -84,7 +84,7 @@ class WaveformToInput(torch.nn.Module):
         else:  # generate chunks with custom sliding window length `patch_hop_seconds`
             patch_hop_in_frames = int(round(YAMNetParams.PATCH_HOP_SECONDS / CommonParams.STFT_HOP_LENGTH_SECONDS))
 
-            # TODO performance optimization with zero copy
+            # to do: performance optimization with zero copy
             patch_hop_num_chunks = (x.shape[0] - window_size_in_frames) // patch_hop_in_frames + 1
             num_frames_to_use = window_size_in_frames + (patch_hop_num_chunks - 1) * patch_hop_in_frames
             x = x[:num_frames_to_use]
