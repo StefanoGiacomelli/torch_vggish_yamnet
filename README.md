@@ -44,7 +44,7 @@ emb_yamnet.shape, emb_vggish.shape
  booktitle	= {Proc. IEEE ICASSP 2017},
  address	  = {New Orleans, LA}}
 ```
-[4] 
+[3] 
 ```
 @incollection{45611,
 title	      = {CNN Architectures for Large-Scale Audio Classification},
@@ -54,4 +54,4 @@ URL	        = {https://arxiv.org/abs/1609.09430},
 booktitle	  = {International Conference on Acoustics, Speech and Signal Processing (ICASSP)}}
 ```
 
-[3] torch_audioset GitHub repository: https://github.com/w-hc/torch_audioset/tree/master
+[4] torch_audioset GitHub repository: https://github.com/w-hc/torch_audioset/tree/master
