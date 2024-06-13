@@ -1,69 +1,57 @@
-# PANNs AT (Audio Tagging) inference
+# Torch VGGish & YAMNet embedding models
 
-**panns_AT_inference** provides an easy to use Python interface for audio tagging. The audio tagging models are trained from PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition: https://github.com/qiuqiangkong/audioset_tagging_cnn
+**torch_vggish_yamnet** provides a ready-to-use PyTorch porting of AudioSet (Google) audio embedding models. The audio tagging models are trained from Models for AudioSet: A Large Scale Dataset of Audio Events: https://github.com/tensorflow/models/tree/master/research/audioset
 
-This is a forked repository/project w. the Top-3 models (see References)
+This is a re-structured forked repository/project from ```torch_audioset``` (see References)
 
 ## Installation
-PyTorch>=1.0 is required.
+PyTorch>=1.0 is required (dependecies are auto-installed).
 ```
-$ pip install panns_AT_inference
+pip install torch-vggish-yamnet
 ```
 
 ## Usage
 ```
-$ python3 example.py
+from torch_vggish_yamnet import yamnet
+from torch_vggish_yamnet import vggish
+from torch_vggish_yamnet.input_proc import *
+
+# Input signal (x_in) tensor conversion & ad-hoc patching
+converter = WaveformToInput()
+in_tensor = converter(x_in.float(), in_sr)
+in_tensor.shape
+
+# Models init
+embedding_yamnet = yamnet.yamnet(pretrained=True)
+embedding_vggish = vggish.get_vggish(with_classifier=False, pretrained=True)
+
+# Embedding (forward)
+emb_yamnet, _ = embedding_yamnet(in_tensor)  # discard logits
+emb_vggish = embedding_vggish(in_tensor)
+
+emb_yamnet.shape, emb_vggish.shape
 ```
-
-For example:
-
-```
-import librosa
-import panns_AT_inference
-from panns_AT_inference import AudioTagging, labels
-
-audio_path = 'examples/R9_ZSCveAHg_7s.wav'
-(audio, _) = librosa.core.load(audio_path, sr=32000, mono=True)
-audio = audio[None, :]  # (batch_size, segment_samples)
-
-print('------ Audio tagging ------')
-at = AudioTagging(model_name=None, device='cuda')
-(clipwise_output, embedding) = at.inference(audio)
-```
-
-
-## Results
-<pre>
------- Audio tagging ------
-Checkpoint path: /root/panns_data/Cnn14_mAP=0.431.pth
-GPU number: 1
-Speech: 0.893
-Telephone bell ringing: 0.754
-Inside, small room: 0.235
-Telephone: 0.183
-Music: 0.092
-Ringtone: 0.047
-Inside, large room or hall: 0.028
-Alarm: 0.014
-Animal: 0.009
-Vehicle: 0.008
-</pre>
 
 ## References
-[1] Kong, Qiuqiang, Yin Cao, Turab Iqbal, Yuxuan Wang, Wenwu Wang, and Mark D. Plumbley. "PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition." arXiv preprint arXiv:1912.10211 (2019).
+[1] AudioSet Official site: http://g.co/audioset
 
 [2] 
 ```
-@article{9229505,
-  author={Kong, Qiuqiang and Cao, Yin and Iqbal, Turab and Wang, Yuxuan and Wang, Wenwu and Plumbley, Mark D.},
-  journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 
-  title={PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition}, 
-  year={2020},
-  volume={28},
-  number={},
-  pages={2880 -- 2894},
-  doi={10.1109/TASLP.2020.3030497}
-  }
+@inproceedings{45857,
+ title	    = {Audio Set: An ontology and human-labeled dataset for audio events},
+ author	    = {Jort F. Gemmeke and Daniel P. W. Ellis and Dylan Freedman and Aren Jansen and Wade Lawrence and R. Channing Moore and Manoj Plakal and Marvin Ritter},
+ year	      = {2017},
+ booktitle	= {Proc. IEEE ICASSP 2017},
+ address	  = {New Orleans, LA}}
+```
+[4] 
+```
+@incollection{45611,
+title	      = {CNN Architectures for Large-Scale Audio Classification},
+author	    = {Shawn Hershey and Sourish Chaudhuri and Daniel P. W. Ellis and Jort F. Gemmeke and Aren Jansen and Channing Moore and Manoj Plakal and Devin Platt and Rif A. Saurous and Bryan Seybold and Malcolm Slaney and Ron Weiss and Kevin Wilson},
+year	      = {2017},
+URL	        = {https://arxiv.org/abs/1609.09430},
+booktitle	  = {International Conference on Acoustics, Speech and Signal Processing (ICASSP)}}
 ```
 
-[3] Official GitHub repository: https://github.com/qiuqiangkong/audioset_tagging_cnn , https://github.com/qiuqiangkong/panns_inference
+[3] torch_audioset GitHub repository: https://github.com/w-hc/torch_audioset/tree/master
