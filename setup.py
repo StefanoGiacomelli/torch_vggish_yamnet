@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="torch_vggish_yamnet",
-    version="0.2.0",
+    version="0.2.1",
     author="Stefano Giacomelli (Ph.D. student UnivAQ)",
     author_email="stefano.giacomelli@graduate.univaq.it",
     description="torch_vggish_yamnet: PyTorch VGGish & YAMNet models",

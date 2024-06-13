@@ -147,12 +147,12 @@ class YAMNet(nn.Module):
         for name in self.layer_names:
             mod = getattr(self, name)
             x = mod(x)
+        x = F.adaptive_avg_pool2d(x, 1)
+
         # Embedding store
         embedding = x.clone()
-        
-        x = F.adaptive_avg_pool2d(x, 1)
+
         x = x.reshape(x.shape[0], -1)
-        
         x = self.classifier(x)
         
         if to_prob:
