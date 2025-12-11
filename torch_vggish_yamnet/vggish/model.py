@@ -49,7 +49,6 @@ class VGGish(nn.Module):
         '''
         x: [N, C, T]
         '''
-        # It's regrattable tensorflow authors of this model treats audio signal as 2d
         # [N, C, T] -> [N, C, T, 1]
         x = self.features(x)
         x = x.permute(0, 2, 3, 1)  # to tf's [N, H, W, C] order
